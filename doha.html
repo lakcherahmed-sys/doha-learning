@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Doha Learns! 🦋</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --rose:#FF6B9D;--rose2:#D44A7A;--violet:#B57BFF;--violet2:#8B3FD9;
+  --teal:#4ECDC4;--gold:#FFD93D;--green:#6BCB77;
+  --bg:#FDF4FF;--white:#FFFFFF;--gray:#F5EFF8;--text:#1A0A2E;--muted:#9B8DAC;
+  --shadow:0 6px 28px rgba(139,61,255,0.12);
+}
+/* SPLASH */
+.splash{position:fixed;inset:0;background:linear-gradient(145deg,#FF6B9D 0%,#C77DFF 50%,#4ECDC4 100%);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.6s;}
+.splash.hide{opacity:0;pointer-events:none;}
+.splash-box{background:rgba(255,255,255,0.97);border-radius:36px;padding:44px 32px 36px;text-align:center;max-width:340px;width:92%;box-shadow:0 40px 100px rgba(0,0,0,0.25);}
+.splash-butterfly{font-size:88px;display:block;animation:flap 1.2s ease-in-out infinite alternate;}
+@keyframes flap{0%{transform:scale(1) rotate(-8deg);}100%{transform:scale(1.18) rotate(8deg);}}
+.splash-box h1{font-size:32px;font-weight:900;color:var(--text);line-height:1.25;margin:14px 0 10px;}
+.splash-box h1 span{background:linear-gradient(135deg,#FF6B9D,#C77DFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.splash-box p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:26px;}
+.splash-btn{background:linear-gradient(135deg,#FF6B9D,#C77DFF);color:#fff;border:none;border-radius:20px;padding:18px 32px;font-size:20px;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(181,123,255,0.45);width:100%;}
+.splash-btn:active{transform:scale(0.96);}
+.splash-dec{display:flex;justify-content:center;gap:14px;margin-top:18px;font-size:28px;}
+/* SHELL */
+html,body{height:100%;overflow:hidden;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto;background:var(--white);box-shadow:var(--shadow);}
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,#FF6B9D 0%,#C77DFF 55%,#4ECDC4 100%);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;overflow:hidden;}
+.topbar-glow{position:absolute;width:160px;height:160px;background:rgba(255,255,255,0.12);border-radius:50%;top:-60px;right:80px;pointer-events:none;}
+.topbar-left{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+.avatar{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.22);border:2.5px solid rgba(255,255,255,0.55);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.topbar-name{font-size:27px;font-weight:900;color:#fff;line-height:1;text-shadow:0 2px 10px rgba(0,0,0,0.15);}
+.topbar-age{font-size:12px;color:rgba(255,255,255,0.88);font-weight:600;margin-top:2px;}
+.stars-badge{position:relative;z-index:1;background:var(--gold);color:#5A3800;border-radius:22px;padding:9px 16px;font-size:19px;font-weight:900;display:flex;align-items:center;gap:5px;box-shadow:0 3px 14px rgba(0,0,0,0.18);flex-shrink:0;}
+/* WEEK TABS */
+.week-bar{display:flex;background:var(--gray);flex-shrink:0;border-bottom:2px solid #E8D8F5;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.week-bar::-webkit-scrollbar{display:none;}
+.week-tab{flex:1;min-width:72px;border:none;background:transparent;padding:9px 4px 7px;font-size:10px;font-weight:800;color:var(--muted);cursor:pointer;text-align:center;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;}
+.week-tab .we{font-size:20px;display:block;margin-bottom:2px;}
+.week-tab .wp{height:3px;border-radius:2px;background:#DDD4E8;margin:5px auto 0;width:72%;overflow:hidden;}
+.week-tab .wf{height:100%;border-radius:2px;transition:width 0.5s;}
+.week-tab.active{background:var(--white);color:var(--rose);border-bottom:3px solid var(--rose);}
+/* NAV */
+.nav{display:flex;background:var(--white);border-top:1.5px solid #EDE8F5;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px);}
+.nav-btn{flex:1;border:none;background:transparent;padding:10px 4px 9px;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.2s;}
+.nav-btn .ni{font-size:24px;transition:transform 0.2s;}
+.nav-btn.active{color:var(--rose);}
+.nav-btn.active .ni{transform:scale(1.22);}
+/* CONTENT */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.content{padding:16px 14px 30px;}
+.section-title{font-size:20px;font-weight:900;color:var(--text);margin:20px 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.section-pill{font-size:12px;font-weight:800;background:var(--gray);color:var(--muted);border-radius:20px;padding:4px 12px;margin-left:auto;flex-shrink:0;}
+.score-row{display:flex;gap:10px;margin-bottom:12px;}
+.sc{flex:1;border-radius:16px;padding:12px 6px;text-align:center;}
+.sc-val{font-size:28px;font-weight:900;}
+.sc-lbl{font-size:11px;font-weight:700;margin-top:2px;}
+.prog-wrap{height:10px;background:var(--gray);border-radius:10px;overflow:hidden;margin:8px 0 16px;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--rose),var(--violet));border-radius:10px;transition:width 0.5s;}
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:13px;}
+@media(min-width:580px){.cards-grid{grid-template-columns:repeat(3,1fr);gap:15px;}}
+@media(min-width:800px){.cards-grid{grid-template-columns:repeat(4,1fr);gap:16px;}}
+.card{background:var(--white);border:3px solid #EDE8F5;border-radius:22px;padding:18px 12px 14px;cursor:pointer;transition:transform .14s,border-color .22s,background .22s,box-shadow .22s;text-align:center;user-select:none;box-shadow:0 3px 12px rgba(181,123,255,0.07);}
+.card:active{transform:scale(0.87);}
+.card.done{background:linear-gradient(135deg,#F5EEFF,#EBDAFF);border-color:var(--violet);box-shadow:0 5px 22px rgba(181,123,255,0.30);}
+.card .c-icon{font-size:62px;line-height:1;margin-bottom:10px;display:block;}
+.card .c-label{font-size:17px;font-weight:900;color:var(--text);line-height:1.3;}
+.card .c-sub{font-size:13px;color:var(--muted);margin-top:5px;font-weight:600;line-height:1.5;}
+.card .c-done{font-size:14px;color:var(--violet2);margin-top:8px;font-weight:900;}
+.card .c-tap{font-size:12px;color:#C0B0D0;margin-top:5px;}
+/* ALPHABET */
+.alpha-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;}
+@media(min-width:580px){.alpha-grid{grid-template-columns:repeat(7,1fr);gap:10px;}}
+@media(min-width:800px){.alpha-grid{grid-template-columns:repeat(9,1fr);}}
+.alpha-card{background:var(--white);border:2.5px solid #EDE8F5;border-radius:14px;padding:10px 5px 8px;cursor:pointer;transition:transform .12s,background .2s,border-color .2s;text-align:center;user-select:none;}
+.alpha-card:active{transform:scale(0.86);}
+.alpha-card.done{background:linear-gradient(135deg,#F5EEFF,#EBDAFF);border-color:var(--violet);}
+.alpha-card .al{font-size:30px;font-weight:900;color:var(--rose);font-family:'Georgia',serif;display:block;line-height:1.1;}
+.alpha-card .aw{font-size:8px;font-weight:700;color:var(--muted);margin-top:3px;line-height:1.3;}
+.alpha-card .ac{font-size:13px;color:var(--violet2);margin-top:2px;}
+/* NUMBERS */
+.num-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px;}
+@media(min-width:580px){.num-grid{grid-template-columns:repeat(5,1fr);}}
+@media(min-width:800px){.num-grid{grid-template-columns:repeat(7,1fr);}}
+.num-card{border-radius:18px;padding:14px 6px;cursor:pointer;transition:transform .12s,opacity .2s,border-color .2s;text-align:center;user-select:none;border:3px solid transparent;box-shadow:0 3px 10px rgba(0,0,0,.07);}
+.num-card:active{transform:scale(0.87);}
+.num-card.done{opacity:0.62;}
+.num-card .nn{font-size:36px;font-weight:900;line-height:1;display:block;}
+.num-card .nw{font-size:10px;font-weight:800;margin-top:4px;line-height:1.7;}
+/* QUIZ */
+.quiz-wrap{background:var(--white);border-radius:26px;border:2.5px solid #EDE8F5;padding:24px 18px 20px;box-shadow:var(--shadow);}
+.quiz-icon-big{font-size:96px;text-align:center;display:block;margin-bottom:6px;animation:popIn 0.38s ease;}
+@keyframes popIn{0%{transform:scale(0.4) rotate(-12deg);}70%{transform:scale(1.18) rotate(4deg);}100%{transform:scale(1) rotate(0deg);}}
+.quiz-q{font-size:20px;font-weight:900;color:var(--text);text-align:center;margin-bottom:20px;line-height:1.4;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
+@media(min-width:600px){.quiz-opts{grid-template-columns:repeat(4,1fr);}}
+.opt{background:var(--gray);border:3px solid #EDE8F5;border-radius:16px;padding:16px 8px;font-size:16px;font-weight:900;cursor:pointer;transition:all .15s;color:var(--text);text-align:center;user-select:none;}
+.opt:active{transform:scale(0.90);}
+.opt.correct{background:#F0E6FF;border-color:var(--violet);color:var(--violet2);}
+.opt.wrong{background:#FFE8EF;border-color:var(--rose);color:var(--rose2);}
+.fb{text-align:center;font-size:21px;font-weight:900;min-height:34px;margin-bottom:8px;}
+.fb.ok{color:var(--violet2);}
+.fb.ko{color:var(--rose);}
+.next-btn{display:block;width:100%;background:linear-gradient(135deg,var(--rose),var(--violet));color:#fff;border:none;border-radius:16px;padding:18px;font-size:19px;font-weight:900;cursor:pointer;margin-top:10px;box-shadow:0 6px 20px rgba(181,123,255,0.38);}
+.next-btn:active{opacity:0.9;transform:scale(0.97);}
+/* SCHEDULE */
+.prog-hero{background:linear-gradient(135deg,#FF6B9D,#C77DFF,#4ECDC4);border-radius:22px;padding:22px 20px;margin-bottom:18px;color:#fff;text-align:center;}
+.week-pcard{background:var(--white);border:2.5px solid #EDE8F5;border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 3px 14px rgba(181,123,255,0.06);}
+.wpc-head{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.wpc-icon{font-size:34px;flex-shrink:0;}
+.wpc-info{flex:1;min-width:0;}
+.wpc-title{font-size:15px;font-weight:900;color:var(--text);}
+.wpc-sub{font-size:12px;color:var(--muted);margin-top:2px;font-weight:600;}
+.wpc-pct{font-size:22px;font-weight:900;flex-shrink:0;}
+.wpc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.wtag{font-size:12px;border-radius:12px;padding:4px 11px;font-weight:700;}
+.wpc-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-top:10px;padding-top:10px;border-top:1px solid var(--gray);}
+.tips-box{background:#F3E8FF;border-radius:20px;padding:18px;border:2px solid #E0CCFF;}
+.tips-box h3{font-size:15px;font-weight:900;color:#7B2FBE;margin-bottom:10px;}
+.tips-box p{font-size:13px;color:#8B5CF6;line-height:1.9;}
+/* STARS */
+.big-star-area{text-align:center;padding:20px 0 14px;}
+.star-anim{font-size:66px;display:inline-block;animation:starPulse 2s ease-in-out infinite alternate;}
+@keyframes starPulse{0%{transform:scale(1) rotate(-3deg);}100%{transform:scale(1.14) rotate(3deg);}}
+.star-count{font-size:58px;font-weight:900;background:linear-gradient(135deg,var(--rose),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-top:4px;}
+.medal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.medal-card{border-radius:18px;padding:16px;text-align:center;}
+.sticker-zone{background:var(--white);border-radius:22px;border:2.5px solid #EDE8F5;padding:18px;margin-bottom:14px;}
+.stickers{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;}
+.sticker{font-size:44px;cursor:pointer;transition:transform .15s;display:inline-block;user-select:none;}
+.sticker:active{transform:scale(1.65) rotate(15deg);}
+.log-box{background:var(--white);border-radius:22px;border:2.5px solid #EDE8F5;padding:16px;margin-bottom:14px;}
+.log-entry{font-size:13px;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--gray);line-height:1.5;}
+.log-entry:last-child{border-bottom:none;}
+.reset-btn{display:block;width:100%;background:#FFF0F5;color:var(--rose2);border:2.5px solid #FFD0E0;border-radius:18px;padding:16px;font-size:16px;font-weight:900;cursor:pointer;text-align:center;}
+.reset-btn:active{background:#FFE0EC;transform:scale(0.97);}
+/* POPUP */
+.popup{position:fixed;inset:0;background:rgba(26,10,46,0.55);display:flex;align-items:center;justify-content:center;z-index:998;opacity:0;pointer-events:none;transition:opacity .25s;}
+.popup.show{opacity:1;pointer-events:all;}
+.popup-box{background:var(--white);border-radius:32px;padding:32px 26px 28px;text-align:center;max-width:290px;width:90%;transform:scale(0.65);transition:transform .28s cubic-bezier(.34,1.56,.64,1);box-shadow:0 30px 70px rgba(181,123,255,0.28);}
+.popup.show .popup-box{transform:scale(1);}
+.popup-icon{font-size:72px;display:block;margin-bottom:8px;}
+.popup-title{font-size:26px;font-weight:900;color:var(--text);margin-bottom:4px;}
+.popup-sub{font-size:14px;color:var(--muted);line-height:1.5;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div id="splash" class="splash">
+  <div class="splash-box">
+    <span class="splash-butterfly">🦋</span>
+    <h1>Happy Birthday<br><span>Doha</span>! 🎉</h1>
+    <p>Your magical learning world is ready!<br>Letters ✨ Numbers 🔢 Animals 🦋<br>Nature 🌿 and so many surprises!</p>
+    <button class="splash-btn" onclick="closeSplash()">Let's go! ✨</button>
+    <div class="splash-dec">🌸 💜 🌟 💫 🌈</div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-glow"></div>
+    <div class="topbar-left">
+      <div class="avatar">🦋</div>
+      <div>
+        <div class="topbar-name">Doha</div>
+        <div class="topbar-age">4 years old — July 2026 ✨</div>
+      </div>
+    </div>
+    <div class="stars-badge">⭐ <span id="stars-top">0</span></div>
+  </div>
+  <div class="week-bar" id="week-bar"></div>
+  <div class="scroll" id="scroll">
+    <div class="content" id="main-content"></div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn active" id="nav-learn" onclick="showTab('learn')"><span class="ni">📚</span>Learn</button>
+    <button class="nav-btn" id="nav-quiz" onclick="showTab('quiz')"><span class="ni">🎯</span>Quiz</button>
+    <button class="nav-btn" id="nav-plan" onclick="showTab('plan')"><span class="ni">📅</span>Schedule</button>
+    <button class="nav-btn" id="nav-stars" onclick="showTab('stars')"><span class="ni">⭐</span>Stars</button>
+  </div>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <span class="popup-icon" id="pi">🎉</span>
+    <div class="popup-title" id="pt">Well done!</div>
+    <div class="popup-sub" id="ps">Amazing Doha!</div>
+  </div>
+</div>
+
+<script>
+// SPLASH
+function closeSplash(){const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.remove(),600);launchConfetti();}
+if(localStorage.getItem('dh_opened')){document.getElementById('splash').remove();}
+else{localStorage.setItem('dh_opened','1');}
+
+// ALPHABET WORDS
+const AW={
+  A:'Apple 🍎',B:'Ball 🏀',C:'Cat 🐱',D:'Dog 🐶',E:'Elephant 🐘',
+  F:'Fish 🐟',G:'Giraffe 🦒',H:'Hat 🎩',I:'Ice cream 🍦',J:'Juice 🧃',
+  K:'Kite 🪁',L:'Lion 🦁',M:'Moon 🌙',N:'Nest 🪺',O:'Orange 🍊',
+  P:'Penguin 🐧',Q:'Queen 👑',R:'Rainbow 🌈',S:'Sun ☀️',T:'Tiger 🐯',
+  U:'Umbrella ☂️',V:'Violin 🎻',W:'Whale 🐋',X:'X-ray 🦴',Y:'Yellow ⭐',Z:'Zebra 🦓'
+};
+
+// NUMBERS
+const NE=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+  'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen','Twenty'];
+const NAR=['','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة','عشرة',
+  'أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر','عشرون'];
+const NC=['#FF6B9D','#B57BFF','#4ECDC4','#FF6B35','#4D96FF','#6BCB77','#FFD93D','#C44569',
+  '#A855F7','#2DD4BF','#F59E0B','#EF4444','#8B5CF6','#06B6D4','#10B981','#F97316','#6366F1','#EC4899','#14B8A6','#FBBF24'];
+
+// 6 WEEKS DATA
+const WD=[
+  {id:'w1',label:'Week 1',emoji:'🔤',color:'#FF6B9D',
+   title:'The Magic Alphabet',
+   desc:'At 4, Doha can spot letters in books and on signs. The alphabet is the key to reading! Link each letter to a fun word and say it out loud together.',
+   tags:[{l:'Alphabet A→Z',c:'#F3E8FF',t:'#7B2FBE'},{l:'26 letters',c:'#FFE8EE',t:'#A8142E'},{l:'Key words',c:'#E8F5E9',t:'#1B5E20'}],
+   sections:[{type:'alpha',head:'🔤 Alphabet A → Z',id:'alpha'}]},
+
+  {id:'w2',label:'Week 2',emoji:'🔢',color:'#B57BFF',
+   title:'Numbers & Shapes',
+   desc:'Counting to 20 and spotting shapes all around us. "The window is a rectangle!" "The clock is a circle!" Make counting part of every walk.',
+   tags:[{l:'Numbers 1→20',c:'#FFF3E0',t:'#8B4000'},{l:'Shapes ×8',c:'#E8F5E9',t:'#1B5E20'}],
+   sections:[
+     {type:'numbers',head:'🔢 Numbers 1 → 20',id:'num1',start:1,end:20},
+     {type:'cards',head:'🔷 Shapes',sub:'English + عربي',id:'shapes',items:[
+       {icon:'⭕',en:'Circle',ar:'دائرة'},{icon:'🟥',en:'Square',ar:'مربع'},
+       {icon:'🔺',en:'Triangle',ar:'مثلث'},{icon:'📐',en:'Rectangle',ar:'مستطيل'},
+       {icon:'⭐',en:'Star',ar:'نجمة'},{icon:'❤️',en:'Heart',ar:'قلب'},
+       {icon:'🔷',en:'Diamond',ar:'معين'},{icon:'🫧',en:'Oval',ar:'بيضاوي'},
+     ].map(x=>({...x,done:false}))}
+   ]},
+
+  {id:'w3',label:'Week 3',emoji:'🦋',color:'#4ECDC4',
+   title:'Animals & Colors',
+   desc:'Animals captivate 4-year-olds! Pair colors with animals to double the learning. "The flamingo is PINK!" "The elephant is GREY!" Point them out everywhere.',
+   tags:[{l:'Animals ×12',c:'#E8F5E9',t:'#1B5E20'},{l:'Colors ×10',c:'#E3F2FD',t:'#0D47A1'}],
+   sections:[
+     {type:'cards',head:'🦋 Animals',sub:'English + عربي',id:'animals',items:[
+       {icon:'🦋',en:'Butterfly',ar:'فراشة'},{icon:'🦁',en:'Lion',ar:'أسد'},
+       {icon:'🐬',en:'Dolphin',ar:'دلفين'},{icon:'🐘',en:'Elephant',ar:'فيل'},
+       {icon:'🦒',en:'Giraffe',ar:'زرافة'},{icon:'🐧',en:'Penguin',ar:'بطريق'},
+       {icon:'🦊',en:'Fox',ar:'ثعلب'},{icon:'🐼',en:'Panda',ar:'باندا'},
+       {icon:'🐰',en:'Rabbit',ar:'أرنب'},{icon:'🦜',en:'Parrot',ar:'ببغاء'},
+       {icon:'🐢',en:'Turtle',ar:'سلحفاة'},{icon:'🦓',en:'Zebra',ar:'حمار وحشي'},
+     ].map(x=>({...x,done:false}))},
+     {type:'cards',head:'🌈 Colors',sub:'English + عربي',id:'colors',items:[
+       {icon:'🔴',en:'Red',ar:'أحمر'},{icon:'🔵',en:'Blue',ar:'أزرق'},
+       {icon:'🟢',en:'Green',ar:'أخضر'},{icon:'🟡',en:'Yellow',ar:'أصفر'},
+       {icon:'🟠',en:'Orange',ar:'برتقالي'},{icon:'🟣',en:'Purple',ar:'بنفسجي'},
+       {icon:'🩷',en:'Pink',ar:'وردي'},{icon:'⚫',en:'Black',ar:'أسود'},
+       {icon:'⚪',en:'White',ar:'أبيض'},{icon:'🟤',en:'Brown',ar:'بني'},
+     ].map(x=>({...x,done:false}))}
+   ]},
+
+  {id:'w4',label:'Week 4',emoji:'💜',color:'#C77DFF',
+   title:'My Body & Feelings',
+   desc:'Knowing yourself and naming emotions builds confidence. Body parts and daily phrases help Doha communicate clearly at home and at school.',
+   tags:[{l:'Body ×10',c:'#FFE8EE',t:'#A8142E'},{l:'Feelings ×8',c:'#F3E8FF',t:'#7B2FBE'},{l:'Phrases ×8',c:'#E8F5E9',t:'#1B5E20'}],
+   sections:[
+     {type:'cards',head:'🧍 My Body',sub:'English + عربي',id:'body',items:[
+       {icon:'👁️',en:'Eyes',ar:'عيون'},{icon:'👃',en:'Nose',ar:'أنف'},
+       {icon:'👄',en:'Mouth',ar:'فم'},{icon:'👂',en:'Ears',ar:'أذنان'},
+       {icon:'✋',en:'Hand',ar:'يد'},{icon:'🦶',en:'Foot',ar:'قدم'},
+       {icon:'💇',en:'Hair',ar:'شعر'},{icon:'🦵',en:'Leg',ar:'ساق'},
+       {icon:'❤️',en:'Heart',ar:'قلب'},{icon:'🫃',en:'Belly',ar:'بطن'},
+     ].map(x=>({...x,done:false}))},
+     {type:'cards',head:'😊 My Feelings',sub:'English + عربي',id:'emo',items:[
+       {icon:'😊',en:'Happy',ar:'سعيدة'},{icon:'😢',en:'Sad',ar:'حزينة'},
+       {icon:'😠',en:'Angry',ar:'غاضبة'},{icon:'😴',en:'Sleepy',ar:'نعسانة'},
+       {icon:'😋',en:'Hungry',ar:'جائعة'},{icon:'😨',en:'Scared',ar:'خائفة'},
+       {icon:'🥰',en:'Loving',ar:'محبة'},{icon:'😲',en:'Surprised',ar:'متفاجئة'},
+     ].map(x=>({...x,done:false}))},
+     {type:'cards',head:'🗣️ My Phrases',sub:'English + عربي',id:'phrases',items:[
+       {icon:'👋',en:'Hello!',ar:'مرحباً!'},{icon:'🙏',en:'Please',ar:'من فضلك'},
+       {icon:'🤝',en:'Thank you!',ar:'شكراً!'},{icon:'💖',en:'I love you',ar:'أحبك'},
+       {icon:'🆘',en:'I need help',ar:'أحتاج مساعدة'},{icon:'😢',en:'I want mom',ar:'أريد ماما'},
+       {icon:'🤲',en:'Sorry!',ar:'آسفة!'},{icon:'🎉',en:'Awesome!',ar:'رائع!'},
+     ].map(x=>({...x,done:false}))}
+   ]},
+
+  {id:'w5',label:'Week 5',emoji:'🌿',color:'#6BCB77',
+   title:'Nature & Food',
+   desc:'The world outside! Nature words and food vocabulary open up everyday conversations. "Look at that RAINBOW!" "Can I have a STRAWBERRY?"',
+   tags:[{l:'Nature ×10',c:'#E8F5E9',t:'#1B5E20'},{l:'Food ×10',c:'#FFF3E0',t:'#8B4000'}],
+   sections:[
+     {type:'cards',head:'🌿 Nature',sub:'English + عربي',id:'nature',items:[
+       {icon:'☀️',en:'Sun',ar:'شمس'},{icon:'🌙',en:'Moon',ar:'قمر'},
+       {icon:'⭐',en:'Star',ar:'نجمة'},{icon:'☁️',en:'Cloud',ar:'سحابة'},
+       {icon:'🌧️',en:'Rain',ar:'مطر'},{icon:'🌈',en:'Rainbow',ar:'قوس قزح'},
+       {icon:'🌸',en:'Flower',ar:'زهرة'},{icon:'🌳',en:'Tree',ar:'شجرة'},
+       {icon:'⛰️',en:'Mountain',ar:'جبل'},{icon:'🌊',en:'Ocean',ar:'محيط'},
+     ].map(x=>({...x,done:false}))},
+     {type:'cards',head:'🍎 Food & Fruits',sub:'English + عربي',id:'food',items:[
+       {icon:'🍎',en:'Apple',ar:'تفاحة'},{icon:'🍌',en:'Banana',ar:'موزة'},
+       {icon:'🍓',en:'Strawberry',ar:'فراولة'},{icon:'🍇',en:'Grapes',ar:'عنب'},
+       {icon:'🍉',en:'Watermelon',ar:'بطيخ'},{icon:'🍕',en:'Pizza',ar:'بيتزا'},
+       {icon:'🎂',en:'Cake',ar:'كعكة'},{icon:'🍦',en:'Ice cream',ar:'آيس كريم'},
+       {icon:'🍞',en:'Bread',ar:'خبز'},{icon:'🧃',en:'Juice',ar:'عصير'},
+     ].map(x=>({...x,done:false}))}
+   ]},
+
+  {id:'w6',label:'Week 6',emoji:'🏫',color:'#FF6B35',
+   title:'Opposites & School',
+   desc:'Opposites build critical thinking. School words help Doha feel confident in any classroom. "The elephant is BIG, the mouse is SMALL!" Play opposites together!',
+   tags:[{l:'Opposites ×12',c:'#FFF3E0',t:'#8B4000'},{l:'School ×10',c:'#E3F2FD',t:'#0D47A1'}],
+   sections:[
+     {type:'cards',head:'🔄 Opposites',sub:'English + عربي',id:'opposites',items:[
+       {icon:'🐘',en:'Big',ar:'كبير'},{icon:'🐭',en:'Small',ar:'صغير'},
+       {icon:'🔥',en:'Hot',ar:'حار'},{icon:'❄️',en:'Cold',ar:'بارد'},
+       {icon:'🐆',en:'Fast',ar:'سريع'},{icon:'🐢',en:'Slow',ar:'بطيء'},
+       {icon:'☀️',en:'Day',ar:'نهار'},{icon:'🌙',en:'Night',ar:'ليل'},
+       {icon:'⬆️',en:'Up',ar:'فوق'},{icon:'⬇️',en:'Down',ar:'تحت'},
+       {icon:'📣',en:'Loud',ar:'صاخب'},{icon:'🤫',en:'Quiet',ar:'هادئ'},
+     ].map(x=>({...x,done:false}))},
+     {type:'cards',head:'🏫 School Words',sub:'English + عربي',id:'school',items:[
+       {icon:'📚',en:'Book',ar:'كتاب'},{icon:'✏️',en:'Pencil',ar:'قلم'},
+       {icon:'👩‍🏫',en:'Teacher',ar:'معلمة'},{icon:'👫',en:'Friend',ar:'صديق'},
+       {icon:'🪑',en:'Chair',ar:'كرسي'},{icon:'🏫',en:'School',ar:'مدرسة'},
+       {icon:'🎒',en:'Bag',ar:'حقيبة'},{icon:'🖍️',en:'Crayon',ar:'تلوين'},
+       {icon:'✂️',en:'Scissors',ar:'مقص'},{icon:'📝',en:'Paper',ar:'ورقة'},
+     ].map(x=>({...x,done:false}))}
+   ]},
+];
+
+// STATE
+let stars=0,qIdx=0,qScore=0,qTotal=0,qStreak=0,answered=false,curWeek='w1',activeTab='learn';
+let doneMap={},numDone={},alphaDone={},sessLog=[];
+
+function save(){try{localStorage.setItem('dh26d',JSON.stringify(doneMap));localStorage.setItem('dh26n',JSON.stringify(numDone));localStorage.setItem('dh26a',JSON.stringify(alphaDone));localStorage.setItem('dh26s',stars);localStorage.setItem('dh26qs',qScore);localStorage.setItem('dh26qt',qTotal);localStorage.setItem('dh26qst',qStreak);localStorage.setItem('dh26log',JSON.stringify(sessLog));}catch(e){}}
+function load(){try{doneMap=JSON.parse(localStorage.getItem('dh26d')||'{}');numDone=JSON.parse(localStorage.getItem('dh26n')||'{}');alphaDone=JSON.parse(localStorage.getItem('dh26a')||'{}');stars=parseInt(localStorage.getItem('dh26s')||'0');qScore=parseInt(localStorage.getItem('dh26qs')||'0');qTotal=parseInt(localStorage.getItem('dh26qt')||'0');qStreak=parseInt(localStorage.getItem('dh26qst')||'0');sessLog=JSON.parse(localStorage.getItem('dh26log')||'[]');}catch(e){}}
+
+function wStats(w){let d=0,t=0;w.sections.forEach(s=>{if(s.type==='cards'){t+=s.items.length;s.items.forEach((_,i)=>{if(doneMap[w.id+'_'+s.id+'_'+i])d++;});}else if(s.type==='numbers'){const c=s.end-s.start+1;t+=c;for(let n=s.start;n<=s.end;n++){if(numDone[n])d++;}}else if(s.type==='alpha'){t+=26;'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l=>{if(alphaDone[l])d++;});}});return{d,t};}
+function totalAll(){let d=0,t=0;WD.forEach(w=>{const s=wStats(w);d+=s.d;t+=s.t;});return{d,t};}
+function updStars(){document.getElementById('stars-top').textContent=stars;const s=document.getElementById('sc-stars');if(s)s.textContent=stars;}
+
+let popT;
+function showPopup(i,t,s){document.getElementById('pi').textContent=i;document.getElementById('pt').textContent=t;document.getElementById('ps').textContent=s;document.getElementById('popup').classList.add('show');clearTimeout(popT);popT=setTimeout(closePopup,1700);}
+function closePopup(){document.getElementById('popup').classList.remove('show');}
+function logSess(label){const n=new Date();const t=n.toLocaleDateString('en-GB')+' '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});sessLog.unshift(t+' — ✅ '+label);if(sessLog.length>40)sessLog.pop();}
+
+// EFFECTS
+function sparkle(el){
+  const rect=el.getBoundingClientRect();
+  const em=['✨','⭐','💫','🌟','💜','🌸','🦋','💖'];
+  for(let i=0;i<8;i++){
+    const s=document.createElement('span');const sz=16+Math.random()*18;
+    s.style.cssText=`position:fixed;pointer-events:none;font-size:${sz}px;left:${rect.left+Math.random()*rect.width}px;top:${rect.top+Math.random()*rect.height}px;z-index:9999;transition:all ${0.7+Math.random()*0.5}s ease-out;opacity:1;`;
+    s.textContent=em[Math.floor(Math.random()*em.length)];document.body.appendChild(s);
+    requestAnimationFrame(()=>{s.style.transform=`translate(${(Math.random()-0.5)*130}px,${-80-Math.random()*90}px) rotate(${(Math.random()-0.5)*400}deg) scale(0.4)`;s.style.opacity='0';});
+    setTimeout(()=>s.remove(),1200);
+  }
+}
+function launchConfetti(){
+  const canvas=document.createElement('canvas');
+  canvas.style.cssText='position:fixed;inset:0;z-index:9997;pointer-events:none;';
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  document.body.appendChild(canvas);const ctx=canvas.getContext('2d');
+  const colors=['#FF6B9D','#C77DFF','#4ECDC4','#FFD93D','#6BCB77','#4D96FF','#FF8C5A'];
+  const pieces=Array.from({length:70},()=>({x:Math.random()*canvas.width,y:-12,vx:(Math.random()-0.5)*5,vy:2.5+Math.random()*3.5,color:colors[Math.floor(Math.random()*colors.length)],size:7+Math.random()*9,angle:Math.random()*360,va:(Math.random()-0.5)*12,circle:Math.random()>.5}));
+  let frame=0;
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pieces.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.angle+=p.va;p.vy+=0.08;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle*Math.PI/180);ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(0,1-frame/140);if(p.circle){ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}else{ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size/2);}ctx.restore();});frame++;if(frame<150)requestAnimationFrame(draw);else canvas.remove();}
+  draw();
+}
+
+// WEEK BAR
+function renderWBar(){
+  const bar=document.getElementById('week-bar');bar.innerHTML='';
+  WD.forEach(w=>{const{d,t}=wStats(w);const pct=t?Math.round(d/t*100):0;const full=d===t&&t>0;
+    const b=document.createElement('button');b.className='week-tab'+(w.id===curWeek?' active':'');
+    b.innerHTML=`<span class="we">${full?'✅':w.emoji}</span>${w.label}<div class="wp"><div class="wf" style="width:${pct}%;background:${w.color}"></div></div>`;
+    b.onclick=()=>{curWeek=w.id;renderWBar();renderLearn();};bar.appendChild(b);});
+}
+
+// CARD HTML
+function cardHtml(item,isDone){return `<span class="c-icon">${item.icon}</span><div class="c-label">${item.en}</div><div class="c-sub">${item.ar||''}</div>${isDone?'<div class="c-done">✨ Well done!</div>':'<div class="c-tap">👆 Tap here!</div>'}`;}
+
+// LEARN
+function renderLearn(){
+  const c=document.getElementById('main-content');c.innerHTML='';
+  const w=WD.find(x=>x.id===curWeek);const{d,t}=wStats(w);const pct=t?Math.round(d/t*100):0;
+  c.innerHTML+=`<div class="score-row"><div class="sc" style="background:#F3E8FF"><div class="sc-val" style="color:#7B2FBE">${d}</div><div class="sc-lbl" style="color:#9333EA">learned</div></div><div class="sc" style="background:#FFE8EE"><div class="sc-val" style="color:#A8142E">${t}</div><div class="sc-lbl" style="color:#C44569">goals</div></div><div class="sc" style="background:#E0F7F6"><div class="sc-val" style="color:#0D6E6A">${pct}%</div><div class="sc-lbl" style="color:#0F9D93">this week</div></div></div><div class="prog-wrap"><div class="prog-bar" style="width:${Math.max(2,pct)}%"></div></div>`;
+  w.sections.forEach(sec=>{
+    if(sec.type==='cards'){
+      const sd=sec.items.filter((_,i)=>doneMap[w.id+'_'+sec.id+'_'+i]).length;
+      const h=document.createElement('div');h.className='section-title';
+      h.innerHTML=sec.head+(sec.sub?`<span style="font-size:11px;color:var(--muted);font-weight:600"> — ${sec.sub}</span>`:'')+`<span class="section-pill">${sd}/${sec.items.length}</span>`;
+      c.appendChild(h);const g=document.createElement('div');g.className='cards-grid';
+      sec.items.forEach((item,i)=>{
+        const key=w.id+'_'+sec.id+'_'+i;const card=document.createElement('div');
+        card.className='card'+(doneMap[key]?' done':'');card.innerHTML=cardHtml(item,!!doneMap[key]);
+        card.onclick=function handler(){
+          const was=!!doneMap[key];doneMap[key]=!was;
+          if(!was){stars++;logSess(item.en);showPopup('🌟','Amazing Doha!',item.icon+' '+item.en);sparkle(card);}else if(stars>0)stars--;
+          card.className='card'+(doneMap[key]?' done':'');card.innerHTML=cardHtml(item,!!doneMap[key]);card.onclick=handler;
+          h.querySelector('.section-pill').textContent=sec.items.filter((_,j)=>doneMap[w.id+'_'+sec.id+'_'+j]).length+'/'+sec.items.length;
+          updStars();renderWBar();save();};g.appendChild(card);});c.appendChild(g);}
+    else if(sec.type==='numbers'){
+      const cnt=sec.end-sec.start+1,nd=[...Array(cnt)].filter((_,i)=>numDone[sec.start+i]).length;
+      const h=document.createElement('div');h.className='section-title';h.innerHTML=sec.head+`<span class="section-pill">${nd}/${cnt}</span>`;c.appendChild(h);
+      const g=document.createElement('div');g.className='num-grid';
+      for(let n=sec.start;n<=sec.end;n++){
+        const col=NC[(n-1)%NC.length];const card=document.createElement('div');
+        card.className='num-card'+(numDone[n]?' done':'');card.style.background=col+'18';card.style.borderColor=numDone[n]?'#B57BFF':col;
+        card.innerHTML=`<span class="nn" style="color:${col}">${n}</span><div class="nw" style="color:${col}">${NE[n]}<br><span style="font-size:9px">${NAR[n]}</span></div>${numDone[n]?'<div style="font-size:15px;color:#8B3FD9;font-weight:900;margin-top:3px">✨</div>':''}`;
+        card.onclick=function handler(){const was=!!numDone[n];numDone[n]=!was;
+          if(!was){stars++;logSess(n+' — '+NE[n]);showPopup('🔢',n+' — '+NE[n],NAR[n]);sparkle(card);}else if(stars>0)stars--;
+          card.className='num-card'+(numDone[n]?' done':'');card.style.borderColor=numDone[n]?'#B57BFF':col;
+          card.innerHTML=`<span class="nn" style="color:${col}">${n}</span><div class="nw" style="color:${col}">${NE[n]}<br><span style="font-size:9px">${NAR[n]}</span></div>${numDone[n]?'<div style="font-size:15px;color:#8B3FD9;font-weight:900;margin-top:3px">✨</div>':''}`;
+          card.onclick=handler;h.querySelector('.section-pill').textContent=[...Array(cnt)].filter((_,i)=>numDone[sec.start+i]).length+'/'+cnt;
+          updStars();renderWBar();save();};g.appendChild(card);}c.appendChild(g);}
+    else if(sec.type==='alpha'){
+      const ad='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l=>alphaDone[l]).length;
+      const h=document.createElement('div');h.className='section-title';h.innerHTML=sec.head+`<span class="section-pill">${ad}/26</span>`;c.appendChild(h);
+      const g=document.createElement('div');g.className='alpha-grid';
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l=>{
+        const card=document.createElement('div');card.className='alpha-card'+(alphaDone[l]?' done':'');
+        card.innerHTML=`<span class="al">${l}</span><div class="aw">${AW[l]||l}</div>${alphaDone[l]?'<div class="ac">✨</div>':''}`;
+        card.onclick=function handler(){const was=!!alphaDone[l];alphaDone[l]=!was;
+          if(!was){stars++;logSess('Letter '+l);showPopup('🔤','Letter '+l+'!',AW[l]||'');sparkle(card);}else if(stars>0)stars--;
+          card.className='alpha-card'+(alphaDone[l]?' done':'');card.innerHTML=`<span class="al">${l}</span><div class="aw">${AW[l]||l}</div>${alphaDone[l]?'<div class="ac">✨</div>':''}`;card.onclick=handler;
+          h.querySelector('.section-pill').textContent='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(x=>alphaDone[x]).length+'/26';
+          updStars();renderWBar();save();};g.appendChild(card);});c.appendChild(g);}
+  });
+  document.getElementById('scroll').scrollTop=0;
+}
+
+// QUIZ
+const QUIZ=[
+  {icon:'✈️',q:'Which letter starts "Airplane"?',opts:['B','A','M','V'],ans:'A'},
+  {icon:'🦋',q:'Which letter starts "Butterfly"?',opts:['P','D','B','F'],ans:'B'},
+  {icon:'🐶',q:'Which letter starts "Dog"?',opts:['B','G','D','P'],ans:'D'},
+  {icon:'☀️',q:'Which letter starts "Sun"?',opts:['T','Z','R','S'],ans:'S'},
+  {icon:'🌈',q:'Which letter starts "Rainbow"?',opts:['P','N','R','M'],ans:'R'},
+  {icon:'🦋',q:'What animal is this?',opts:['Butterfly','Rabbit','Fox','Turtle'],ans:'Butterfly'},
+  {icon:'🦁',q:'This animal ROARS very loud!',opts:['Panda','Lion','Zebra','Fox'],ans:'Lion'},
+  {icon:'🐬',q:'This animal swims and leaps!',opts:['Turtle','Rabbit','Dolphin','Fox'],ans:'Dolphin'},
+  {icon:'🐼',q:'Black & white — loves bamboo!',opts:['Zebra','Rabbit','Giraffe','Panda'],ans:'Panda'},
+  {icon:'🦒',q:'This animal has a very long neck!',opts:['Elephant','Giraffe','Lion','Turtle'],ans:'Giraffe'},
+  {icon:'🦊',q:'This clever orange animal is a...?',opts:['Cat','Rabbit','Fox','Tiger'],ans:'Fox'},
+  {icon:'🔴',q:'What color is this? 🔴',opts:['Blue','Red','Green','Yellow'],ans:'Red'},
+  {icon:'🟡',q:'Color of the sun! ☀️',opts:['Red','Blue','Yellow','Green'],ans:'Yellow'},
+  {icon:'🟢',q:'Color of grass! 🌿',opts:['Red','Yellow','Purple','Green'],ans:'Green'},
+  {icon:'🩷',q:'Color of flamingos! 🦩',opts:['Orange','Pink','Brown','Black'],ans:'Pink'},
+  {icon:'⭕',q:'Round like the moon — it\'s a...?',opts:['Square','Triangle','Circle','Star'],ans:'Circle'},
+  {icon:'🔺',q:'3 sides, 3 corners — it\'s a...?',opts:['Rectangle','Triangle','Diamond','Square'],ans:'Triangle'},
+  {icon:'❤️',q:'The shape of love — it\'s a...?',opts:['Circle','Square','Heart','Star'],ans:'Heart'},
+  {icon:'3️⃣',q:'What number is this?',opts:['Two','Four','Three','Five'],ans:'Three'},
+  {icon:'7️⃣',q:'What number is this?',opts:['Six','Nine','Eight','Seven'],ans:'Seven'},
+  {icon:'🔢',q:'After 9 comes...?',opts:['Eight','Eleven','Twelve','Ten'],ans:'Ten'},
+  {icon:'🔢',q:'After 15 comes...?',opts:['Fourteen','Thirteen','Sixteen','Seventeen'],ans:'Sixteen'},
+  {icon:'😊',q:'This face feels...?',opts:['Sad','Happy','Angry','Surprised'],ans:'Happy'},
+  {icon:'😢',q:'This face feels...?',opts:['Happy','Angry','Sad','Surprised'],ans:'Sad'},
+  {icon:'🥰',q:'This face shows...?',opts:['Fear','Hunger','Love','Anger'],ans:'Love'},
+  {icon:'👃',q:'We smell flowers with our...?',opts:['Eyes','Ears','Nose','Mouth'],ans:'Nose'},
+  {icon:'👂',q:'We hear music with our...?',opts:['Feet','Ears','Hand','Heart'],ans:'Ears'},
+  {icon:'✋',q:'We draw and play with our...?',opts:['Foot','Leg','Hand','Hair'],ans:'Hand'},
+  {icon:'🌈',q:'After the rain we see a...?',opts:['Star','Cloud','Rainbow','Moon'],ans:'Rainbow'},
+  {icon:'🍎',q:'Red fruit — keeps doctors away!',opts:['Banana','Apple','Grapes','Strawberry'],ans:'Apple'},
+  {icon:'🍌',q:'Yellow fruit that monkeys love!',opts:['Apple','Orange','Banana','Grapes'],ans:'Banana'},
+  {icon:'🍕',q:'Round food with cheese & tomato!',opts:['Cake','Pizza','Bread','Ice cream'],ans:'Pizza'},
+  {icon:'📚',q:'We read stories from a...?',opts:['Chair','Pencil','Book','Bag'],ans:'Book'},
+  {icon:'✏️',q:'We write and draw with a...?',opts:['Book','Pencil','Scissors','Chair'],ans:'Pencil'},
+  {icon:'🐘',q:'An elephant is very...?',opts:['Fast','Cold','Small','Big'],ans:'Big'},
+  {icon:'❄️',q:'Ice and snow are very...?',opts:['Hot','Soft','Cold','Loud'],ans:'Cold'},
+  {icon:'🐆',q:'A cheetah runs very...?',opts:['Slow','Quiet','Fast','Big'],ans:'Fast'},
+];
+
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+let qList=[...QUIZ];shuf(qList);
+
+function renderQuiz(){
+  answered=false;const q=qList[qIdx%qList.length];
+  const c=document.getElementById('main-content');c.innerHTML='';
+  c.innerHTML=`<div class="score-row"><div class="sc" style="background:#E8F5E9"><div class="sc-val" style="color:#1B5E20" id="qs">${qScore}</div><div class="sc-lbl" style="color:#2E7D32">✓ correct</div></div><div class="sc" style="background:#FFF3E0"><div class="sc-val" style="color:#8B4000" id="qt">${qTotal}</div><div class="sc-lbl" style="color:#BF6000">played</div></div><div class="sc" style="background:#F3E8FF"><div class="sc-val" style="color:#7B2FBE" id="qst">${qStreak}</div><div class="sc-lbl" style="color:#9333EA">🔥 streak</div></div></div>`;
+  const wrap=document.createElement('div');wrap.className='quiz-wrap';
+  wrap.innerHTML=`<span class="quiz-icon-big">${q.icon}</span><div class="quiz-q">${q.q}</div>`;
+  const optsEl=document.createElement('div');optsEl.className='quiz-opts';
+  const fbEl=document.createElement('div');fbEl.className='fb';
+  const shuffOpts=[...q.opts];shuf(shuffOpts);
+  shuffOpts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=()=>{if(answered)return;answered=true;qTotal++;
+      optsEl.querySelectorAll('.opt').forEach(btn=>{if(btn.textContent===q.ans)btn.className='opt correct';else if(btn.textContent===o&&o!==q.ans)btn.className='opt wrong';});
+      if(o===q.ans){qScore++;stars++;qStreak++;fbEl.textContent='🌟 Correct! Well done!';fbEl.className='fb ok';showPopup('🌟','Excellent Doha!','You found: '+q.ans+'!');launchConfetti();}
+      else{qStreak=0;fbEl.textContent='💪 Right answer: '+q.ans;fbEl.className='fb ko';}
+      updStars();save();document.getElementById('qs').textContent=qScore;document.getElementById('qt').textContent=qTotal;document.getElementById('qst').textContent=qStreak;};
+    optsEl.appendChild(b);});
+  const nb=document.createElement('button');nb.className='next-btn';nb.textContent='Next Question ➜';
+  nb.onclick=()=>{qIdx=(qIdx+1)%qList.length;if(qIdx===0){qList=[...QUIZ];shuf(qList);}renderQuiz();};
+  wrap.appendChild(optsEl);wrap.appendChild(fbEl);wrap.appendChild(nb);c.appendChild(wrap);
+  document.getElementById('scroll').scrollTop=0;
+}
+
+// SCHEDULE
+function renderPlan(){
+  const c=document.getElementById('main-content');
+  const{d,t}=totalAll();const gp=t?Math.round(d/t*100):0;
+  c.innerHTML=`<div class="prog-hero"><span style="font-size:42px;display:block;margin-bottom:8px">🦋</span><h2 style="font-size:20px;font-weight:900;margin-bottom:6px">6 Weeks of Learning Magic</h2><p style="font-size:13px;opacity:0.9;line-height:1.6">July 2026 • ${t} goals • English + عربي<br><strong>${d}/${t} learned (${gp}%)</strong></p></div>`;
+  WD.forEach(w=>{
+    const{d,t}=wStats(w);const pct=t?Math.round(d/t*100):0;const full=pct===100;
+    const div=document.createElement('div');div.className='week-pcard';
+    div.style.borderLeftWidth='5px';div.style.borderLeftColor=full?'#6BCB77':w.color;
+    div.innerHTML=`<div class="wpc-head"><div class="wpc-icon">${full?'✅':w.emoji}</div><div class="wpc-info"><div class="wpc-title">${w.label} — ${w.title}</div><div class="wpc-sub">${w.sections.map(s=>s.head.split(' ').slice(1).join(' ')).join(' • ')}</div></div><div class="wpc-pct" style="color:${full?'#6BCB77':w.color}">${pct}%</div></div>
+    <div class="prog-wrap" style="margin:8px 0 6px"><div class="prog-bar" style="width:${Math.max(2,pct)}%;${full?'background:var(--green)':'background:linear-gradient(90deg,'+w.color+',#C77DFF)'}"></div></div>
+    <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:8px">${d} / ${t} learned</div>
+    <div class="wpc-tags">${w.tags.map(tg=>`<span class="wtag" style="background:${tg.c};color:${tg.t}">${tg.l}</span>`).join('')}</div>
+    <div class="wpc-desc">${w.desc}</div>`;
+    c.appendChild(div);});
+  const tips=document.createElement('div');tips.className='tips-box';
+  tips.innerHTML=`<h3>💡 Tips for Parents</h3><p>🕐 <strong>15-20 min per session</strong> — perfect for a 4-year-old's focus<br>🔁 <strong>Review</strong> yesterday's cards before moving forward<br>🎵 <strong>Sing</strong> the alphabet — it sticks much better!<br>🌳 <strong>Outside</strong>: "That car is RED! The sky is BLUE!"<br>📖 <strong>One picture book</strong> every evening before sleep<br>🍓 <strong>Food time</strong>: name every fruit and food she eats<br>❤️ <strong>Celebrate</strong> every single star she earns!</p>`;
+  c.appendChild(tips);document.getElementById('scroll').scrollTop=0;
+}
+
+// STARS
+function renderStars(){
+  const c=document.getElementById('main-content');
+  const{d,t}=totalAll();const gp=t?Math.round(d/t*100):0;
+  c.innerHTML=`<div class="big-star-area"><span class="star-anim">🌟</span><div class="star-count" id="sc-stars">${stars}</div><div style="font-size:15px;color:var(--muted);margin-top:6px;font-weight:700">stars earned by Doha</div><div style="margin-top:10px;font-size:14px;font-weight:800;background:linear-gradient(135deg,var(--rose),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${d}/${t} goals reached (${gp}%)</div><div class="prog-wrap" style="width:72%;margin:10px auto 0"><div class="prog-bar" style="width:${Math.max(2,gp)}%"></div></div></div>`;
+  const mg=document.createElement('div');mg.className='medal-grid';
+  [{icon:'🥉',name:'Explorer',v:20,c:'#FFF3E0',tc:'#8B4000'},
+   {icon:'🥈',name:'Star Learner',v:50,c:'#F5F5F5',tc:'#424242'},
+   {icon:'🥇',name:'Brilliant',v:100,c:'#FFF8E1',tc:'#8B6000'},
+   {icon:'👑',name:'Queen Doha',v:150,c:'#F3E8FF',tc:'#7B2FBE'}
+  ].forEach(m=>{const got=stars>=m.v;mg.innerHTML+=`<div class="medal-card" style="background:${m.c}"><div style="font-size:40px">${got?m.icon:'🔒'}</div><div style="font-size:13px;font-weight:900;color:${m.tc};margin-top:7px">${m.name}</div><div style="font-size:11px;color:${m.tc};font-weight:700;margin-top:3px">${Math.min(stars,m.v)}/${m.v} ⭐</div></div>`;});
+  c.appendChild(mg);
+  const sz=document.createElement('div');sz.className='sticker-zone';
+  sz.innerHTML='<div style="font-size:16px;font-weight:900;color:var(--text)">🎨 Doha\'s Stickers</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Tap a sticker!</div>';
+  const sr=document.createElement('div');sr.className='stickers';
+  ['🦋','🌸','⭐','🌟','💜','🌈','🦄','🧁','🎀','💫','🌺','🐬','🦜','🐼','🌙','✨','🎉','👑','💎','🌻','🍓','🎈','🏆','🦊'].forEach(s=>{
+    const el=document.createElement('span');el.className='sticker';el.textContent=s;
+    el.onclick=()=>{showPopup(s,'Doha picked!',s+' '+s+' '+s);sparkle(el);};sr.appendChild(el);});
+  sz.appendChild(sr);c.appendChild(sz);
+  const lb=document.createElement('div');lb.className='log-box';lb.innerHTML='<div style="font-size:15px;font-weight:900;color:var(--text);margin-bottom:10px">📋 Parents\' Journal</div><div id="log-list"></div>';c.appendChild(lb);
+  const ll=document.getElementById('log-list');ll.innerHTML=sessLog.length?sessLog.map(l=>'<div class="log-entry">'+l+'</div>').join(''):'<div class="log-entry">No sessions recorded yet.</div>';
+  const rb=document.createElement('button');rb.className='reset-btn';rb.innerHTML='🔄 Start Over';
+  rb.onclick=()=>{if(!confirm('Reset all progress?\n\nStars and cards will reset.\nThe journal will be kept.'))return;
+    const now=new Date();const ts=now.toLocaleDateString('en-GB')+' '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    sessLog.unshift(ts+' — 🔄 Reset by parents');doneMap={};numDone={};alphaDone={};stars=0;qScore=0;qTotal=0;qStreak=0;
+    save();updStars();renderWBar();renderStars();showPopup('🔄','Fresh start!','Doha\'s progress starts from zero 💪');};
+  c.appendChild(rb);document.getElementById('scroll').scrollTop=0;
+}
+
+// TABS
+function showTab(name){
+  activeTab=name;document.getElementById('week-bar').style.display=name==='learn'?'flex':'none';
+  ['learn','quiz','plan','stars'].forEach(t=>document.getElementById('nav-'+t).className='nav-btn'+(t===name?' active':''));
+  if(name==='learn')renderLearn();else if(name==='quiz')renderQuiz();else if(name==='plan')renderPlan();else renderStars();
+}
+
+// INIT
+load();renderWBar();renderLearn();updStars();
+</script>
+</body>
+</html>
